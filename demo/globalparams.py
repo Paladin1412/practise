@@ -30,17 +30,22 @@ class GlobalParams(object):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) Chrome/56.0.2896.3 Safari/537.36'
         }
         host = 'www.ziroom.com'
+        self.crm_domain = 's.t.ziroom.com'
 
-        log_config = {
+        self.log_config = {
             'file_path': '../log/error-%s.log' % time.strftime('%Y-%m-%d', time.localtime(time.time())),
             'console_level': 'logging.INFO',
             'file_level': 'logging.DEBUG'
         }
 
+        self.user_info = {
+            'username': '',
+            'password': ''
+        }
+
         self.http = HttpConfig(host=host, headers=header)
         self.mysql = MysqlConfig(config=mysql_config, db=mysql_name)
         self.oracle = OracleConfig(orcl_config, orcl_user, orcl_pswd)
-        self.logger = Logger(log_config.get('file_path'), log_config.get('console_level'), log_config.get('file_level'))
 
     def get_http(self):
         return self.http
@@ -57,5 +62,6 @@ class GlobalParams(object):
     def close_orcl_conn(self):
         self.oracle.oracle_close()
 
-    def log(self):
-        return self.logger
+    def log(self, file_path):
+        logger = Logger(file_path, self.log_config.get('console_level'), self.log_config.get('file_level'))
+        return logger

@@ -5,6 +5,7 @@
 # @Version : python 3.4
 # @Author  : KingDow
 import requests
+from globalparams import GlobalParams
 
 
 class HttpConfig(object):
@@ -13,6 +14,7 @@ class HttpConfig(object):
         self.port = ':' + str(port)
         self.header = headers if headers else {}
         self.s = requests.Session()
+        self.log = GlobalParams().log(__name__)
 
     def get_host(self):
         return self.host
@@ -23,19 +25,37 @@ class HttpConfig(object):
     def set_port(self, port):
         self.port = port
 
+    def set_header(self, header):
+        self.header = header
+
     def http_post(self, url, data=None):
         url = self.host + self.port + url
         data = data if data else ''
-        r = self.s.post(
-            url=url, data=data, headers=self.header)
-        return r
+        try:
+            r = self.s.post(url=url, data=data, headers=self.header)
+            if r.status_code == 200:
+                self.log.info("发送post请求: %s  服务器返回:  %s" % (r.url, r.status_code))
+            else:
+                self.log.error("发送post请求: %s   服务器返回:  %s\n error info: %s " % (
+                    r.url, r.status_code, r.text))
+            return r
+        except Exception as e:
+            print('%s' % e)
 
     def http_get(self, url, param=None):
         url = self.host + self.port + url
         param = param if param else ''
-        r = self.s.get(
-            url=url, params=param, headers=self.header)
-        return r
+        try:
+            r = self.s.get(
+                url=url, params=param, headers=self.header)
+            if r.status_code == 200:
+                self.log.info("发送post请求: %s  服务器返回:  %s" % (r.url, r.status_code))
+            else:
+                self.log.error("发送post请求: %s   服务器返回:  %s\n error info: %s " % (
+                    r.url, r.status_code, r.text))
+            return r
+        except Exception as e:
+            print('%s' % e)
 
     def http_put(self, url, data=None):
         r = self.s.put(url=url, data=data)

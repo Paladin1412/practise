@@ -16,6 +16,8 @@ class HtmlReport(object):
         self.filename = ''  # 结果文件名
         self.time_took = '00:00:00'  # 测试耗时
         self.tm = time.strftime('%Y%m%d%H%M%S', time.localtime())
+        self.result1 = result1
+        self.result2 = result2
 
     # 生成HTML报告
     def generate_html(self, head, file):
