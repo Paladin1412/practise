@@ -1,4 +1,4 @@
-# PyTest Demo 
+PyTest Demo
 ============
     1、PyTest Demo 
     2、Http
@@ -7,11 +7,11 @@
     5、Report
 
 目录结构
--------
+-----------
 
 #### 目录结构描述
     ├── readme.md                        // help
-    ├── demo                             // 主目录 
+    ├── demo                             // 主目录
     │	 ├── ziroomer  
     │   │   ├── demo.py
     │   │   └── getappid.py
