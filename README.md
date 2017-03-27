@@ -13,8 +13,8 @@
     ├── readme.md                        // help
     ├── demo                             // 主目录 
     │	 ├── ziroomer  
-    │   │     ├── demo.py
-    │   │     └── getappid.py 
+    │   │   ├── demo.py
+    │   │   └── getappid.py
     │   ├── __init__.py                 // 初始化
     │   ├── commfunc.py                 // 公共方法
     │   ├── dbconfig.py                 // 数据库
@@ -53,7 +53,7 @@ pip install `cx-Oracle`
 更新
 -------
 #### V1.0.0 版本内容更新
-1. demo
+1. demo框架
 2. 日志配置
 3. 单元测试
 4. 测试报告
