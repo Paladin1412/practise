@@ -4,8 +4,17 @@
 # @Date    : 2017/3/14 13:08
 # @Version : python 3.4
 # @Author  : KingDow
-import nose
 
+from demo.logconfig import GetLog
+from demo.ziroomer.getappid import CommonApiParas
 
 if __name__ == '__main__':
-    result = nose.run()
+    gl = GetLog()
+    log = gl.log()
+    cap = CommonApiParas()
+    appId = cap.get_appid()
+    log.info('info')
+    log.error('error')
+    log.debug('debug')
+    log.critical('critical')
+    log.warning('warning')

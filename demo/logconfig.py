@@ -7,6 +7,8 @@
 import logging
 import logging.handlers
 
+from demo.globalparams import GlobalParams
+
 
 class Logger(object):
     def __init__(self, path, console_level=logging.DEBUG, file_level=logging.DEBUG):
@@ -45,3 +47,12 @@ class Logger(object):
 
     def critical(self, message):
         self.logger.critical(message)
+
+
+class GetLog(object):
+    def __init__(self):
+        gp = GlobalParams()
+        self.logger = Logger(gp.logconf['path'], gp.logconf['console_level'], gp.logconf['file_level'])
+
+    def log(self):
+        return self.logger

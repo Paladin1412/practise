@@ -5,16 +5,17 @@
 # @Version : python 3.4
 # @Author  : KingDow
 import requests
-from globalparams import GlobalParams
+from demo.globalparams import GlobalParams
+from demo.logconfig import GetLog
 
 
 class HttpConfig(object):
-    def __init__(self, host, port=80, headers=None):
+    def __init__(self, host, port=None, headers=None):
         self.host = 'http://' + host
-        self.port = ':' + str(port)
+        self.port = ':' + str(port) if port else ''
         self.header = headers if headers else {}
         self.s = requests.Session()
-        self.log = GlobalParams().log(__name__)
+        self.log = GetLog().log()
 
     def get_host(self):
         return self.host
@@ -33,29 +34,38 @@ class HttpConfig(object):
         data = data if data else ''
         try:
             r = self.s.post(url=url, data=data, headers=self.header)
-            if r.status_code == 200:
-                self.log.info("发送post请求: %s  服务器返回:  %s" % (r.url, r.status_code))
+            if r.status_code == requests.codes.ok:
+                self.log.info("发送post请求: %s 服务器返回: %s\n请求入参为: %s" % (r.url, r.status_code, data))
             else:
-                self.log.error("发送post请求: %s   服务器返回:  %s\n error info: %s " % (
+                self.log.error("发送post请求: %s 服务器返回: %s\n error info: %s " % (
                     r.url, r.status_code, r.text))
+                self.log.error(r.raise_for_status())
             return r
         except Exception as e:
-            print('%s' % e)
+            self.log.error('%s' % e)
+
+    def multiple_post(self, url):
+        url = self.host + self.port + url
+        multiple_files = [
+            ('images', ('foo.png', open('foo.png', 'rb'), 'image/png')),
+            ('images', ('bar.png', open('bar.png', 'rb'), 'image/png'))]
+        r = requests.post(url, files=multiple_files)
+        return r
 
     def http_get(self, url, param=None):
         url = self.host + self.port + url
         param = param if param else ''
         try:
-            r = self.s.get(
-                url=url, params=param, headers=self.header)
-            if r.status_code == 200:
-                self.log.info("发送post请求: %s  服务器返回:  %s" % (r.url, r.status_code))
+            r = self.s.get(url=url, params=param, headers=self.header)
+            if r.status_code == requests.codes.ok:
+                self.log.info("发送get请求: %s，服务器返回: %s" % (r.url, r.status_code))
             else:
-                self.log.error("发送post请求: %s   服务器返回:  %s\n error info: %s " % (
+                self.log.error("发送get请求: %s，服务器返回: %s\n error info: %s" % (
                     r.url, r.status_code, r.text))
+                self.log.error(r.raise_for_status())
             return r
         except Exception as e:
-            print('%s' % e)
+            self.log.error('%s' % e)
 
     def http_put(self, url, data=None):
         r = self.s.put(url=url, data=data)
@@ -72,3 +82,12 @@ class HttpConfig(object):
     def http_options(self, url):
         r = self.s.options(url=url)
         return r
+
+
+class GetHttp(object):
+    def __init__(self):
+        self.gp = GlobalParams()
+        self.http = HttpConfig(host=self.gp.crm_domain, headers=self.gp.header)
+
+    def get_http(self):
+        return self.http

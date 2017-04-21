@@ -57,25 +57,3 @@ def is_file_exist(path):
             return True
     except IOError:
         return False
-
-
-def cas_login(self):
-    self.http.set_header(self.header)
-    print("========以下进行CAS用户登录操作========")
-    first_url = '/AMS/security/security!index.action'
-    redirect_res = self.http.http_get(first_url).decode('utf-8')
-    redirect_url = re.findall(r'service=http%3A%2F%2F(.*?)%3A80%2FAMS', redirect_res, re.S | re.M)
-
-    print("========业务系统重定向跳转CAS========")
-    res = self.http.http_get('/CAS/login?service=http://%s:80%s' % (
-        redirect_url[0], first_url), host='cas.ziroom.com')
-    lt = re.findall(r'name="lt" value="(.*?)" />', res.decode('utf-8'), re.S | re.M)
-    execution = re.findall(r'name="execution" value="(.*?)" />', res.decode('utf-8'), re.S | re.M)
-    event = re.findall(r'name="_eventId" value="(.*?)" />', res.decode('utf-8'), re.S | re.M)
-
-    print("========CAS校验用户名密码ticket========")
-    url = '/CAS/login?service=http:///%s:80%s' % (redirect_url[0], first_url)
-    data = 'username=%s&password=%s&lt=%s&execution=%s&_eventId=%s' % (
-        self.http.user_info.get('username'), self.http.user_info.get('password'), lt[0], execution[0], event[0])
-    cas_res = self.http.post(url, host='cas.ziroom.com', data=data)
-    return cas_res
