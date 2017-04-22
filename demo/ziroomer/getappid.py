@@ -27,3 +27,8 @@ class CommonApiParas(object):
                 return app_id
         else:
             self.log.error("createAppId----------->>>>>>>>>>为空")
+
+    def index_baidu(self):
+        url = 'http://yun.baidu.com/'
+        r = self.http.http_get(url)
+        return r.text

@@ -6,8 +6,10 @@
 # @Author  : KingDow
 import logging
 import logging.handlers
+import os
+import threading
 
-from demo.globalparams import GlobalParams
+from demo import readConfig
 
 
 class Logger(object):
@@ -50,9 +52,14 @@ class Logger(object):
 
 
 class GetLog(object):
-    def __init__(self):
-        gp = GlobalParams()
-        self.logger = Logger(gp.logconf['path'], gp.logconf['console_level'], gp.logconf['file_level'])
+    def __init__(self, path=readConfig.logPath):
+        self.path = path
+        self.logger = None
+        self.tl = threading.Lock()
 
     def log(self):
+        if not self.logger:
+            self.tl.acquire()
+            self.logger = Logger(path=self.path)
+            self.tl.release()
         return self.logger

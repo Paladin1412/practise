@@ -5,7 +5,8 @@
 # @Version : python 3.4
 # @Author  : KingDow
 import requests
-from demo.globalparams import GlobalParams
+
+from demo import readConfig
 from demo.logconfig import GetLog
 
 
@@ -28,6 +29,25 @@ class HttpConfig(object):
 
     def set_header(self, header):
         self.header = header
+
+    def http_get(self, url, param=None):
+        url = self.host + self.port + url
+        param = param if param else ''
+        try:
+            r = self.s.get(url=url, params=param, headers=self.header)
+            if r.status_code == requests.codes.ok:
+                self.log.info("发送get请求: %s，服务器返回: %s" % (r.url, r.status_code))
+            else:
+                self.log.error("发送get请求: %s，服务器返回: %s\n error info: %s" % (
+                    r.url, r.status_code, r.text))
+                self.log.error(r.raise_for_status())
+            return r
+        except Exception as e:
+            self.log.error('%s' % e)
+
+    def http_put(self, url, data=None):
+        r = self.s.put(url=url, data=data)
+        return r
 
     def http_post(self, url, data=None):
         url = self.host + self.port + url
@@ -52,25 +72,6 @@ class HttpConfig(object):
         r = requests.post(url, files=multiple_files)
         return r
 
-    def http_get(self, url, param=None):
-        url = self.host + self.port + url
-        param = param if param else ''
-        try:
-            r = self.s.get(url=url, params=param, headers=self.header)
-            if r.status_code == requests.codes.ok:
-                self.log.info("发送get请求: %s，服务器返回: %s" % (r.url, r.status_code))
-            else:
-                self.log.error("发送get请求: %s，服务器返回: %s\n error info: %s" % (
-                    r.url, r.status_code, r.text))
-                self.log.error(r.raise_for_status())
-            return r
-        except Exception as e:
-            self.log.error('%s' % e)
-
-    def http_put(self, url, data=None):
-        r = self.s.put(url=url, data=data)
-        return r
-
     def http_delete(self, url):
         r = self.s.delete(url=url)
         return r
@@ -86,8 +87,10 @@ class HttpConfig(object):
 
 class GetHttp(object):
     def __init__(self):
-        self.gp = GlobalParams()
-        self.http = HttpConfig(host=self.gp.crm_domain, headers=self.gp.header)
+        local_read_config = readConfig.ReadConfig()
+        domain = local_read_config.conf_http("ziroom_domain")
+        header = local_read_config.conf_http("header")
+        self.http = HttpConfig(host=domain, headers=header)
 
     def get_http(self):
         return self.http

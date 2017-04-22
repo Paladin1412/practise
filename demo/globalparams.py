@@ -41,7 +41,7 @@ class GlobalParams(object):
 
         ###########################################################
         self.logconf = {
-            'path': 'D:\\autoTest\\PYTHON\\pytest-demo\\log\\error-%s.log' % time.strftime(
+            'path': '../log/error-%s.log' % time.strftime(
                 '%Y-%m-%d', time.localtime(time.time())),
             'console_level': 'INFO',
             'file_level': 'DEBUG'
