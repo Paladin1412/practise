@@ -6,14 +6,13 @@
 # @Author  : KingDow
 import logging
 import logging.handlers
-import os
 import threading
 
-from demo import readConfig
+from common import readConfig
 
 
 class Logger(object):
-    def __init__(self, path, console_level=logging.DEBUG, file_level=logging.DEBUG):
+    def __init__(self, path, console_level=logging.INFO, file_level=logging.DEBUG):
         self.logger = logging.getLogger(path)
         self.logger.setLevel(logging.DEBUG)
         fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s', '%Y-%m-%d %H:%M:%S')

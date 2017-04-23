@@ -4,9 +4,7 @@
 # @Date    : 2017/3/14 13:08
 # @Version : python 3.4
 # @Author  : KingDow
-from demo.httpconfig import GetHttp
-from demo.logconfig import GetLog
-from demo.ziroomer.getappid import CommonApiParas
+from common.httpConfig import GetHttp
 
 if __name__ == '__main__':
     # gl = GetLog()

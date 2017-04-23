@@ -6,13 +6,13 @@
 # @Author  : KingDow
 import requests
 
-from demo import readConfig
-from demo.logconfig import GetLog
+from common import readConfig
+from common.logConfig import GetLog
 
 
 class HttpConfig(object):
     def __init__(self, host, port=None, headers=None):
-        self.host = 'http://' + host
+        self.host = host if 'http'.find(host) else 'http://' + host
         self.port = ':' + str(port) if port else ''
         self.header = headers if headers else {}
         self.s = requests.Session()
@@ -45,10 +45,6 @@ class HttpConfig(object):
         except Exception as e:
             self.log.error('%s' % e)
 
-    def http_put(self, url, data=None):
-        r = self.s.put(url=url, data=data)
-        return r
-
     def http_post(self, url, data=None):
         url = self.host + self.port + url
         data = data if data else ''
@@ -72,6 +68,10 @@ class HttpConfig(object):
         r = requests.post(url, files=multiple_files)
         return r
 
+    def http_put(self, url, data=None):
+        r = self.s.put(url=url, data=data)
+        return r
+
     def http_delete(self, url):
         r = self.s.delete(url=url)
         return r
@@ -87,10 +87,12 @@ class HttpConfig(object):
 
 class GetHttp(object):
     def __init__(self):
-        local_read_config = readConfig.ReadConfig()
-        domain = local_read_config.conf_http("ziroom_domain")
-        header = local_read_config.conf_http("header")
-        self.http = HttpConfig(host=domain, headers=header)
+        read_config = readConfig.ReadConfig()
+        self.domain = read_config.conf_http("ziroom_domain")
+        self.header = read_config.conf_http("header")
+        self.http = None
 
     def get_http(self):
+        if not self.http:
+            self.http = HttpConfig(host=self.domain, headers=self.header)
         return self.http

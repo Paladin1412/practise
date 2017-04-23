@@ -8,7 +8,7 @@ import pymysql
 import time
 
 
-class GlobalParams(object):
+class GlobalParamsTmep(object):
     def __init__(self):
         ###########################################################
         # MySQL数据库配置

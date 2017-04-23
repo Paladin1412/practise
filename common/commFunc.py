@@ -4,10 +4,9 @@
 # @Date    : 2017/3/14 13:07
 # @Version : python 3.4
 # @Author  : KingDow
-import os
-import re
-import time
 import hashlib
+import os
+import time
 
 
 def get_app_sign(uid, timestamp):
@@ -21,6 +20,7 @@ def get_app_sign(uid, timestamp):
 def to_md5(mystr):
     """
         指定字符串MD5加密
+        :param mystr: 待MD5加密字符串
     """
     mybyte = mystr.encode(encoding='utf-8')
     m = hashlib.md5(mybyte)
