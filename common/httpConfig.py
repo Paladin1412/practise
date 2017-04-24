@@ -12,7 +12,12 @@ from common.logConfig import GetLog
 
 class HttpConfig(object):
     def __init__(self, host, port=None, headers=None):
-        self.host = host if 'http'.find(host) else 'http://' + host
+        if host.find('s.t.ziroom.com') != -1:
+            self.host = host + '/crm-reserve'
+        else:
+            self.host = host
+        if self.host.find('http') == -1:
+            self.host = 'http://' + self.host
         self.port = ':' + str(port) if port else ''
         self.header = headers if headers else {}
         self.s = requests.Session()
@@ -88,7 +93,7 @@ class HttpConfig(object):
 class GetHttp(object):
     def __init__(self):
         read_config = readConfig.ReadConfig()
-        self.domain = read_config.conf_http("ziroom_domain")
+        self.domain = read_config.conf_http("crm_domain")
         self.header = read_config.conf_http("header")
         self.http = None
 

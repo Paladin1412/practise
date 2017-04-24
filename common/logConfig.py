@@ -23,15 +23,11 @@ class Logger(object):
         stream_handler.setLevel(console_level)
 
         # 设置文件日志
-        file_handler = logging.FileHandler(path)
-        # 设置文件大小以及最多同时存在的数量
-        date_handler = logging.handlers.TimedRotatingFileHandler(path, when='D', interval=1, backupCount=10)
-        # size_handler = logging.handlers.RotatingFileHandler(path, maxBytes=20, backupCount=5)
-        file_handler.setFormatter(fmt)
-        file_handler.setLevel(file_level)
+        date_handler = logging.handlers.TimedRotatingFileHandler(path, when='D', interval=1, backupCount=30)
+        date_handler.setFormatter(fmt)
+        date_handler.setLevel(file_level)
 
         self.logger.addHandler(stream_handler)
-        # self.logger.addHandler(file_handler)
         self.logger.addHandler(date_handler)
 
     def debug(self, message):

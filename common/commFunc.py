@@ -8,6 +8,10 @@ import hashlib
 import os
 import time
 
+from common.logConfig import GetLog
+
+log = GetLog().log()
+
 
 def get_app_sign(uid, timestamp):
     key = "7srzT88FcNiRQA3n"
@@ -57,3 +61,22 @@ def is_file_exist(path):
             return True
     except IOError:
         return False
+
+
+def str2json(data, value_type='str'):
+    data = data[:-1] if data[-1] == '&' else data
+    if value_type == 'str':
+        json_value = dict((l.split('=') for l in data.split('&')))
+        if json_value:
+            log.debug('转换str类型value dict成功：\n%s' % json_value)
+            return json_value
+    elif value_type == 'int':
+        try:
+            json_value = dict(((lambda i: (i[0], int(i[1])))(l.split('=')) for l in data.split('&')))
+            if json_value:
+                log.debug('转换int类型value dict成功：\n%s' % json_value)
+                return json_value
+        except Exception as e:
+            log.error('转换int类型value dict报错：\n%s' % e)
+    else:
+        log.error("转换值类型输入有误，请输入'str'或'int'.")

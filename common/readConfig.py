@@ -9,10 +9,12 @@ import json
 import os
 import time
 
-os.chdir('../config')  # 配置文件目录
-configPath = os.path.join(os.getcwd(), "test.ini")
-os.chdir('../log')  # 日志目录
-logPath = os.path.join(os.getcwd(), 'error-%s.log' % time.strftime(
+# 项目根目录
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 配置文件目录
+configPath = os.path.join(path, "config", "test.ini")
+# 日志目录
+logPath = os.path.join(path, "log", 'error-%s.log' % time.strftime(
     '%Y-%m-%d', time.localtime(time.time())))
 
 
