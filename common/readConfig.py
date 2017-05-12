@@ -10,11 +10,11 @@ import os
 import time
 
 # 项目根目录
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+rootPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 配置文件目录
-configPath = os.path.join(path, "config", "test.ini")
+configPath = os.path.join(rootPath, "config", "testConfig.ini")
 # 日志目录
-logPath = os.path.join(path, "log", 'error-%s.log' % time.strftime(
+logPath = os.path.join(rootPath, "log", 'error-%s.log' % time.strftime(
     '%Y-%m-%d', time.localtime(time.time())))
 
 

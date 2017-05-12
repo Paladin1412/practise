@@ -21,7 +21,7 @@ class HttpConfig(object):
         self.port = ':' + str(port) if port else ''
         self.header = headers if headers else {}
         self.s = requests.Session()
-        self.log = GetLog().log()
+        self.log = GetLog(__name__).log()
 
     def get_host(self):
         return self.host
@@ -56,7 +56,8 @@ class HttpConfig(object):
         try:
             r = self.s.post(url=url, data=data, headers=self.header)
             if r.status_code == requests.codes.ok:
-                self.log.info("发送post请求: %s 服务器返回: %s\n请求入参为: %s" % (r.url, r.status_code, data))
+                self.log.info("发送post请求: %s 服务器返回: %s" % (r.url, r.status_code))
+                self.log.info("请求入参为: %s" % data)
             else:
                 self.log.error("发送post请求: %s 服务器返回: %s\n error info: %s " % (
                     r.url, r.status_code, r.text))
@@ -98,6 +99,6 @@ class GetHttp(object):
         self.http = None
 
     def get_http(self):
-        if not self.http:
+        if self.http is None:
             self.http = HttpConfig(host=self.domain, headers=self.header)
         return self.http

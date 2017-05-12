@@ -14,7 +14,7 @@ class CommonApiParas(object):
         self.log = GetLog().log()
 
     def get_appid(self):
-        appid_url = "/crm-reserve/common/createAppId?appType=2&imei=352248061569009"
+        appid_url = "/common/createAppId?appType=2&imei=352248061569009"
         res_json = self.http.http_get(appid_url).json()
         if res_json:
             app_id = res_json.get("data").get("appId")
@@ -25,8 +25,3 @@ class CommonApiParas(object):
                 return app_id
         else:
             self.log.error("createAppId----------->>>>>>>>>>为空")
-
-    def index_baidu(self):
-        url = 'http://yun.baidu.com/'
-        r = self.http.http_get(url)
-        return r.text
