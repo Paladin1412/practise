@@ -37,10 +37,10 @@ class ReadConfig(object):
     def conf_http(self, name):
         return self.conf_format("HTTP", name)
 
-    def conf_db1(self, name):
+    def conf_mysql(self, name):
         return self.conf_format("MYSQL", name)
 
-    def conf_db2(self, name):
+    def conf_oracle(self, name):
         return self.conf_format("ORACLE", name)
 
     def conf_email(self, name):

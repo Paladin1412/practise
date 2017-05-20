@@ -113,6 +113,3 @@ class SendEmail(object):
             self.email = EmailConfig()
             self.mutex.release()
         return self.email
-
-# if __name__ == "__main__":
-#     SendEmail().get_email().send_email()

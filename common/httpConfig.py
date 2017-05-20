@@ -12,7 +12,7 @@ from common.logConfig import GetLog
 
 class HttpConfig(object):
     def __init__(self, host, port=None, headers=None):
-        if host.find('s.t.ziroom.com') != -1:
+        if host.find('s.t.ziroom.com') != -1 or host.find('busopp.t.ziroom.com') != -1:
             self.host = host + '/crm-reserve'
         else:
             self.host = host
@@ -21,7 +21,7 @@ class HttpConfig(object):
         self.port = ':' + str(port) if port else ''
         self.header = headers if headers else {}
         self.s = requests.Session()
-        self.log = GetLog(__name__).log()
+        self.log = GetLog().log()
 
     def get_host(self):
         return self.host
@@ -46,7 +46,12 @@ class HttpConfig(object):
                 self.log.error("发送get请求: %s，服务器返回: %s\n error info: %s" % (
                     r.url, r.status_code, r.text))
                 self.log.error(r.raise_for_status())
-            return r
+            try:
+                self.log.info('接口出参为: %s' % r.json())
+                return r.json()
+            except ValueError:
+                self.log.info('接口出参为: %s' % r.text)
+                return r.text
         except Exception as e:
             self.log.error('%s' % e)
 
@@ -62,7 +67,12 @@ class HttpConfig(object):
                 self.log.error("发送post请求: %s 服务器返回: %s\n error info: %s " % (
                     r.url, r.status_code, r.text))
                 self.log.error(r.raise_for_status())
-            return r
+            try:
+                self.log.info('接口出参为: %s' % r.json())
+                return r.json()
+            except ValueError:
+                self.log.info('接口出参为: %s' % r.text)
+                return r.text
         except Exception as e:
             self.log.error('%s' % e)
 
@@ -92,9 +102,9 @@ class HttpConfig(object):
 
 
 class GetHttp(object):
-    def __init__(self):
+    def __init__(self, domain):
         read_config = readConfig.ReadConfig()
-        self.domain = read_config.conf_http("crm_domain")
+        self.domain = read_config.conf_http(domain)
         self.header = read_config.conf_http("header")
         self.http = None
 
