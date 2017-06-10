@@ -104,8 +104,8 @@ class HttpConfig(object):
 class GetHttp(object):
     def __init__(self, domain):
         read_config = readConfig.ReadConfig()
-        self.domain = read_config.conf_http(domain)
-        self.header = read_config.conf_http("header")
+        self.domain = read_config.conf_value('HTTP', domain)
+        self.header = read_config.conf_value('HTTP', 'header')
         self.http = None
 
     def get_http(self):

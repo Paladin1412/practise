@@ -10,7 +10,6 @@ from common import commFunc
 from common import globalParams
 from common.httpConfig import GetHttp
 from common.logConfig import GetLog
-from testCase.keeper.keeperParams.keeperParms import KeeperParams
 
 
 class KeeperLogin(object):

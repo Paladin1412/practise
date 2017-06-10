@@ -6,7 +6,7 @@
 # @Author  : KingDow
 
 
-def init():  # 初始化
+def global_init():  # 初始化
     global global_dict
     global_dict = {}
 
@@ -22,3 +22,5 @@ def get_value(key, default_value=None):
         return global_dict[key]
     except KeyError:
         return default_value
+
+# login_uid

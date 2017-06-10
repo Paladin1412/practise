@@ -1,71 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# @Date    : 2017/4/24 16:37
+# @Date    : 2017/4/24 17:49
 # @Version : python 3.4
 # @Author  : KingDow
-import time
-
 from common import commFunc
 from common import globalParams
 from common.httpConfig import GetHttp
 from common.logConfig import GetLog
-from testCase.keeper.keeperParams.keeperParms import KeeperParams
 
 
-class KeeperLogin(object):
+class KeeperBusOpp(object):
     def __init__(self):
-        self.http = GetHttp('crm_domain').get_http()
         self.log = GetLog().log()
+        self.http = GetHttp('crm_domain').get_http()
 
-    def test_get_latest_version(self):
+    def test_query_perform(self):
         """
-        启动管家APP时获取最新版本号
+        不同线索来源列表
         :return:
         """
-        url = '/common/getLatestVersion'
-        data = {'source': KeeperParams().source,
-                'appType': KeeperParams().appType,
-                'keeperCode': globalParams.get_value('login_uid'),
-                'imei': KeeperParams().imei,
-                'osType': KeeperParams().osType,
-                'versionInt': KeeperParams().versionInt,
-                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
-                'timestamp': commFunc.timestamp_13(),
-                'appId': globalParams.get_value('app_id'),
-                'cityCode': KeeperParams().cityCode
-                }
-        data['sign'] = commFunc.get_crm_sign(data)
-        resp = self.http.http_post(url, data)
-        return resp
-
-    def test_get_district_list(self):
-        """
-        管家登陆成功首页获取城市区域列表
-        :return:
-        """
-        url = '/house/getDistrictList'
-        data = {'appType': KeeperParams().appType,
-                'source': KeeperParams().source,
-                'keeperCode': globalParams.get_value('login_uid'),
-                'osType': KeeperParams().osType,
-                'imei': KeeperParams().imei,
-                'versionInt': KeeperParams().versionInt,
-                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
-                'timestamp': commFunc.timestamp_13(),
-                'appId': globalParams.get_value('app_id'),
-                'cityCode': KeeperParams().cityCode
-                }
-        data['sign'] = commFunc.get_crm_sign(data)
-        resp = self.http.http_post(url, data)
-        return resp
-
-    def test_get_home_page_module(self):
-        """
-        获取首页管家功能模块
-        :return:
-        """
-        url = '/orderUser/getHomePageModule'
+        url = '/busopp/queryPerform'
         data = {'keeperId': globalParams.get_value('login_uid'),
                 'appType': KeeperParams().appType,
                 'source': KeeperParams().source,
@@ -73,7 +28,6 @@ class KeeperLogin(object):
                 'osType': KeeperParams().osType,
                 'imei': KeeperParams().imei,
                 'versionInt': KeeperParams().versionInt,
-                'roleCode': '1',
                 'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
                 'timestamp': commFunc.timestamp_13(),
                 'appId': globalParams.get_value('app_id'),
@@ -83,32 +37,96 @@ class KeeperLogin(object):
         resp = self.http.http_post(url, data)
         return resp
 
-    def test_get_schedule_by_keeperid_and_condition(self):
-        url = '/orderUser/getScheduleByKeeperIdAndCondition'
+    def test_get_user_info_by_condition(self):
+        url = '/user/getUserInfoByCondition'
+        data = {'appType': KeeperParams().appType,
+                'source': KeeperParams().source,
+                'keeperCode': globalParams.get_value('login_uid'),
+                'osType': KeeperParams().osType,
+                'imei': KeeperParams().imei,
+                'versionInt': KeeperParams().versionInt,
+                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
+                'timestamp': commFunc.timestamp_13(),
+                'condition': KeeperParams().condition,
+                'appId': globalParams.get_value('app_id'),
+                'cityCode': KeeperParams().cityCode
+                }
+        data['sign'] = commFunc.get_crm_sign(data)
+        resp = self.http.http_post(url, data)
+        return resp
+
+    def test_get_village_list(self):
+        url = '/house/getVillageList'
         data = {'source': KeeperParams().source,
                 'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
                 'timestamp': commFunc.timestamp_13(),
+                'resblock': KeeperParams().resblock,
                 'appId': globalParams.get_value('app_id'),
                 'cityCode': KeeperParams().cityCode,
+                'keeperId': globalParams.get_value('login_uid'),
+                'districtId': KeeperParams().districtId,
+                'appType': KeeperParams().appType,
+                'keeperCode': globalParams.get_value('login_uid'),
+                'osType': KeeperParams().osType,
+                'imei': KeeperParams().imei,
+                'versionInt': KeeperParams().versionInt
+                }
+        data['sign'] = commFunc.get_crm_sign(data)
+        resp = self.http.http_post(url, data)
+        return resp
+
+    def test_app_search_bus_opp_by_standard_info(self):
+        url = '/busopp/appSearchBusOppByStandardInfo'
+        data = {'source': KeeperParams().source,
+                'buildNum': '11%E5%8F%B7%E6%A5%BC',
+                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
+                'timestamp': commFunc.timestamp_13(),
+                'appId': globalParams.get_value('app_id'),
+                'roomNum': '402',
+                'cityCode': KeeperParams().cityCode,
+                'districtId': KeeperParams().districtId,
                 'keeperId': globalParams.get_value('login_uid'),
                 'appType': KeeperParams().appType,
                 'keeperCode': globalParams.get_value('login_uid'),
                 'osType': KeeperParams().osType,
                 'imei': KeeperParams().imei,
-                'searchTitle': '',
                 'versionInt': KeeperParams().versionInt,
-                'searchDate': time.strftime("%Y-%m-%d")
+                'unit': '2%E5%8D%95%E5%85%83',
+                'floor': KeeperParams().floor,
+                'villageId': '1111027374425'
                 }
         data['sign'] = commFunc.get_crm_sign(data)
         resp = self.http.http_post(url, data)
         return resp
 
-    def test_get_app_be_evaluate(self):
-        """
-        获取管家平均分积分
-        :return:
-        """
-        url = '/hkApp/getAppBeEvaluate'
+    def test_check_bus_opp(self):
+        url = '/busopp/checkBusOpp'
+        data = {'source': KeeperParams().source,
+                'buildNum': '11%E5%8F%B7%E6%A5%BC',
+                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
+                'districtName': '%E6%9C%9D%E9%98%B3',
+                'timestamp': commFunc.timestamp_13(),
+                'appId': globalParams.get_value('app_id'),
+                'roomNum': '402',
+                'cityCode': KeeperParams().cityCode,
+                'districtId': KeeperParams().districtId,
+                'appType': KeeperParams().appType,
+                'keeperCode': globalParams.get_value('login_uid'),
+                'osType': KeeperParams().osType,
+                'imei': KeeperParams().imei,
+                'versionInt': KeeperParams().versionInt,
+                'isTopBaseFloor': '0',
+                'villageName': '%E8%8A%B3%E5%9B%AD%E9%87%8C',
+                'unit': KeeperParams().unit,
+                'floor': KeeperParams().floor,
+                'villageId': '1111027374425'
+                }
+        data['sign'] = commFunc.get_crm_sign(data)
+        resp = self.http.http_post(url, data)
+        return resp
+
+    def test_query_bo_first_source_list(self):
+        url = '/busopp/queryBOFirstSourceList'
         data = {'appType': KeeperParams().appType,
                 'source': KeeperParams().source,
                 'keeperCode': globalParams.get_value('login_uid'),
@@ -117,20 +135,16 @@ class KeeperLogin(object):
                 'versionInt': KeeperParams().versionInt,
                 'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
                 'timestamp': commFunc.timestamp_13(),
-                'uid': globalParams.get_value('login_uid'),
                 'appId': globalParams.get_value('app_id'),
+                'boType': '1',
                 'cityCode': KeeperParams().cityCode
                 }
         data['sign'] = commFunc.get_crm_sign(data)
         resp = self.http.http_post(url, data)
         return resp
 
-    def test_get_target_info(self):
-        """
-        调用资产系统获取目标看板
-        :return:
-        """
-        url = '/hkApp/getTargetInfo'
+    def test_query_bo_second_source_list(self):
+        url = '/busopp/queryBOSecondSourceList'
         data = {'appType': KeeperParams().appType,
                 'source': KeeperParams().source,
                 'keeperCode': globalParams.get_value('login_uid'),
@@ -138,50 +152,38 @@ class KeeperLogin(object):
                 'imei': KeeperParams().imei,
                 'versionInt': KeeperParams().versionInt,
                 'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
-                'userAccount': globalParams.get_value('login_uid'),
                 'timestamp': commFunc.timestamp_13(),
                 'appId': globalParams.get_value('app_id'),
+                'firstSourceId': '104',
                 'cityCode': KeeperParams().cityCode
                 }
         data['sign'] = commFunc.get_crm_sign(data)
         resp = self.http.http_post(url, data)
         return resp
 
-    def test_get_all_module(self):
-        """
-        根据管家类型获取功能池列表
-        :return:
-        """
-        url = '/orderUser/getAllModule'
-        data = {'appType': KeeperParams().appType,
+    def test_get_keeper_by_and_source_type(self):
+        url = '/busopp/getKeeperByAndSourceType'
+        data = {'entryPersonName': '%E9%BB%84%E6%98%A5%E6%99%93',
                 'source': KeeperParams().source,
+                'entryPersonCode': '20189548',
+                'firstSource': '153',
+                'buildNum': '11%E5%8F%B7%E6%A5%BC',
+                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
+                'secondSource': '151',
+                'timestamp': commFunc.timestamp_13(),
+                'appId': globalParams.get_value('app_id'),
+                'roomNum': '402',
+                'cityCode': KeeperParams().cityCode,
+                'keeperId': globalParams.get_value('login_uid'),
+                'districtId': KeeperParams().districtId,
+                'appType': KeeperParams().appType,
                 'keeperCode': globalParams.get_value('login_uid'),
                 'osType': KeeperParams().osType,
                 'imei': KeeperParams().imei,
                 'versionInt': KeeperParams().versionInt,
-                'roleCode': '1',
-                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
-                'timestamp': commFunc.timestamp_13(),
-                'appId': globalParams.get_value('app_id'),
-                'cityCode': KeeperParams().cityCode
-                }
-        data['sign'] = commFunc.get_crm_sign(data)
-        resp = self.http.http_post(url, data)
-        return resp
-
-    def test_get_message_list(self):
-        url = '/messageCenter/getMessageList'
-        data = {'appType': KeeperParams().appType,
-                'source': KeeperParams().source,
-                'businessType': '1',
-                'keeperCode': globalParams.get_value('login_uid'),
-                'osType': KeeperParams().osType,
-                'imei': KeeperParams().imei,
-                'versionInt': KeeperParams().versionInt,
-                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
-                'timestamp': commFunc.timestamp_13(),
-                'appId': globalParams.get_value('app_id'),
-                'cityCode': KeeperParams().cityCode
+                'unit': KeeperParams().unit,
+                'floor': KeeperParams().floor,
+                'villageId': '1111027374425'
                 }
         data['sign'] = commFunc.get_crm_sign(data)
         resp = self.http.http_post(url, data)

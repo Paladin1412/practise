@@ -4,8 +4,8 @@
 # @Date    : 2017/4/22 20:01
 # @Version : python 3.4
 # @Author  : KingDow
+import ast
 import configparser
-import json
 import os
 import time
 
@@ -13,35 +13,30 @@ import time
 rootPath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 配置文件目录
 configPath = os.path.join(rootPath, "config", "testConfig.ini")
+# 参数配置
+keeperParanmsPath = os.path.join(rootPath, "proAPI", "keeper", "keeperParam", "keeperParams.ini")
 # 日志目录
 logPath = os.path.join(rootPath, "log", 'error-%s.log' % time.strftime(
     '%Y-%m-%d', time.localtime(time.time())))
 
 
 class ReadConfig(object):
-    def __init__(self):
+    def __init__(self, conf_path='configPath'):
         self.cf = configparser.ConfigParser()
-        self.cf.read(configPath)
+        if conf_path == 'configPath':
+            self.cf.read(configPath)
+        elif conf_path == 'keeperParanmsPath':
+            self.cf.read(keeperParanmsPath)
+        else:
+            print('---->> configPath ERROR！')
 
     def conf_format(self, section, key):
         value = self.cf.get(section, key)
-        if value[0] == value[-1] in ("'", '"'):
-            value = value[1:-1]
-        if value[0] == '{' and value[-1] == '}' and ':'.find(value):
-            try:
-                return json.loads(value.replace("'", '"'))
-            except ValueError:
-                return eval(value)
-        return value
+        try:
+            newvalue = ast.literal_eval(value)
+        except ValueError:
+            newvalue = value
+        return newvalue
 
-    def conf_http(self, name):
-        return self.conf_format("HTTP", name)
-
-    def conf_mysql(self, name):
-        return self.conf_format("MYSQL", name)
-
-    def conf_oracle(self, name):
-        return self.conf_format("ORACLE", name)
-
-    def conf_email(self, name):
-        return self.conf_format("EMAIL", name)
+    def conf_value(self, section, key):
+        return self.conf_format(section, key)

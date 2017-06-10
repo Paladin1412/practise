@@ -8,10 +8,12 @@
 import requests
 from bs4 import BeautifulSoup
 
+from common.commFunc import merge_dict
+
 
 class CasSso(object):
     def __init__(self):
-        self.url = 'http://z.ziroom.com'
+        self.url = 'http://zf.ziroom.com'
         self.userinfo = {
             'username': 'yangjb18',
             'password': 'Yang1234'
@@ -25,20 +27,22 @@ class CasSso(object):
 
     def cas_sso(self):
         r = requests.get(self.url)
+        print(r.text)
         soup = BeautifulSoup(r.text, 'html.parser')
         hidden = soup.find_all('input', attrs={'type': "hidden"})
         hidden_auth = {}
         for i in hidden:
             hidden_auth[i.get('name')] = i.get('value')
         print(r.url)
-        print(r.headers)
+        print(hidden_auth)
         # print(r.text)
-        data = dict(hidden_auth, **self.userinfo)
-        r2 = requests.post(r.url, data=data, cookies=r.cookies, allow_redirects=False)
-        # print(r2.url)
-        print(r2.headers.get('Location'))
-        r3 = requests.get(r2.headers.get('Location'))
-        print(r3.text)
+        data = merge_dict(hidden_auth, self.userinfo)
+        print(data)
+        r2 = requests.post(r.url, data=data, cookies=r.cookies)
+        print('aaaaaa', r2.text)
+        # print(r2.headers.get('Location'))
+        # r3 = requests.get(r2.headers.get('Location'))
+        # print(r3.text)
 
 
 cas = CasSso()

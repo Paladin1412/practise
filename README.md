@@ -11,23 +11,33 @@ PyTest Demo
 
 #### 目录结构描述
     ├── readme.md                        // help
-    ├── demo                             // 主目录
-    │	 ├── ziroomer  
-    │   │   ├── demo.py
-    │   │   └── getappid.py
-    │   ├── __init__.py                 // 初始化
-    │   ├── commfunc.py                 // 公共方法
-    │   ├── dbconfig.py                 // 数据库
-    │   ├── globalparams.py             // 参数
-    │   ├── htmlreport.py               // 测试报告
-    │   ├── httpconfig.py               // http
-    │   ├── logconfig.py                // 日志
-    │   └── main.py                     // 主函数
-    ├── log
+    ├── main.py                          // main函数
+    ├── common
+    │   ├── __init__.py 
+    │   ├── cassso.py                   // 单点登录                    
+    │   ├── commFunc.py                 // 公共方法
+    │   ├── dbConfig.py                 // 数据库
+    │   ├── globalParams.py             // 公共参数
+    │   ├── htmlReport.py               // 测试报告
+    │   ├── httpConfig.py               // http
+    │   ├── logConfig.py                // 日志配置
+    │   ├── emailConfig.py              // 配置邮箱    
+    │   └── readConfig.py               // 读取配置文件
+    ├── config                           // 环境配置
+    │   ├── testConfig.ini
+    │   └── quasiConfig.ini
+    ├── log                              // 日志log
     │   ├── error-20170227182905.log
     │   └── error-20170227182905.log.1 
-    ├── test                             // 单元测试
-    │   └── testdemo.py 
+    ├── testCase                         // 测试用例
+    │   ├── projectA
+    │   │   ├── testA.py 
+    │   │   ├── testB.py     
+    │   ├── projectB
+    │   │   ├── testC.py    
+    │   ├── projectC  
+    │   │   ├── testD.py           
+    │   └── projectD 
     ├── report                           // 测试报告
          └── report20170227182905.html 
 

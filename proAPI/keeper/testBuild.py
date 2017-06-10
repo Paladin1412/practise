@@ -8,10 +8,9 @@ from common import commFunc
 from common import globalParams
 from common.httpConfig import GetHttp
 from common.logConfig import GetLog
-from testCase.keeper.keeperParams.keeperParms import KeeperParams
 
 
-class TestBuildInfo(object):
+class BuildInfo(object):
     def __init__(self):
         self.log = GetLog().log()
         self.http = GetHttp('crm_domain').get_http()

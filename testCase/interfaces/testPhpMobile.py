@@ -4,35 +4,26 @@
 # @Date    : 2017/4/24 18:04
 # @Version : python 3.4
 # @Author  : KingDow
-import sys
 
-from common import commFunc
 from common import globalParams
-from common.httpConfig import GetHttp
-from common.logConfig import GetLog
-from testCase.keeper.keeperParams.keeperParms import KeeperParams
+from proAPI.interfaces.testPhpLogin import PhpLogin
+from proAPI.interfaces.testPhpMobile import PhpMobile
+from proAPI.ziroomer.getappid import CommonApiParas
 
 
-class PhpMobile(object):
+class TestPhpMobile(object):
     def __init__(self):
-        self.log = GetLog().log()
-        self.http = GetHttp('interfaces_domain').get_http()
+        globalParams.global_init()  # 全局变量初始化
+        PhpLogin().php_login_normal('suikk', '123')
+        self.th = PhpMobile()
+
+    def setUp(self):
+        CommonApiParas().get_appid()
+        print("MyTestClass setup")
+
+    def tearDown(self):
+        print("MyTestClass teardown")
 
     def test_get_is_focus_resblock(self):
-        """
-        判断是否聚焦楼盘
-        :return:is_focus=1 -->聚焦楼盘
-        """
-        url = '/index.php?_p=api_mobile&_a=getIsFocusResblock'
-        data = {'timestamp': commFunc.timestamp_10(),
-                'uid': globalParams.get_value('login_uid'),
-                'user_account': globalParams.get_value('login_uid'),
-                'house_num': KeeperParams().resblockId,
-                'sign': commFunc.get_app_sign(globalParams.get_value('login_uid'), commFunc.timestamp_10())
-                }
-        resp = self.http.http_post(url, data)
-
-        if resp.get('data').get('is_focus') != 1:
-            self.log.error("所选择的楼盘是非聚焦楼盘！楼盘id---->>%s" % KeeperParams().resblockId)
-            sys.exit()
-        return resp
+        resp = self.th.get_is_focus_resblock()
+        assert resp.get('status') == 'success'

@@ -20,10 +20,10 @@ def get_app_sign(uid, timestamp):
     :param timestamp:
     :return:
     """
-    key = "7srzT88FcNiRQA3n"
+    secret = "7srzT88FcNiRQA3n"
     if not uid:
         uid = "0"
-    sign = to_md5(uid + timestamp + key)
+    sign = to_md5(uid + timestamp + secret)
     return sign
 
 
@@ -37,7 +37,7 @@ def get_crm_sign(dict_data):
     sort_dict_data = sorted(dict_data.items())  # 对字典表按照key：value进行自然排序
     my_str = urllib.parse.urlencode(sort_dict_data)
     data = my_str.replace('&', '') + secret
-    sign = to_md5(data)  # sign签名
+    sign = to_md5(data)
     return sign
 
 
@@ -97,28 +97,3 @@ def is_file_exist(path):
             return True
     except IOError:
         return False
-
-
-def str2json(data, value_type='str'):
-    """
-    实例：将'a'='1'&'b'='2'&'c'='3' 转为{'a': '1', 'b': '2', 'c':'3'}
-    :param data:
-    :param value_type:
-    :return:
-    """
-    data = data[:-1] if data[-1] == '&' else data
-    if value_type == 'str':
-        json_value = dict((l.split('=') for l in data.split('&')))
-        if json_value:
-            log.debug('转换str类型value dict成功：\n%s' % json_value)
-            return json_value
-    elif value_type == 'int':
-        try:
-            json_value = dict(((lambda i: (i[0], int(i[1])))(l.split('=')) for l in data.split('&')))
-            if json_value:
-                log.debug('转换int类型value dict成功：\n%s' % json_value)
-                return json_value
-        except Exception as e:
-            log.log().error('转换int类型value dict报错：\n%s' % e)
-    else:
-        log.error("转换值类型输入有误，请输入'str'或'int'.")
