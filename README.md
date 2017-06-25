@@ -12,32 +12,34 @@ PyTest Demo
 #### 目录结构描述
     ├── readme.md                        // help
     ├── main.py                          // main函数
-    ├── common
-    │   ├── __init__.py 
-    │   ├── cassso.py                   // 单点登录                    
-    │   ├── commFunc.py                 // 公共方法
-    │   ├── dbConfig.py                 // 数据库
-    │   ├── globalParams.py             // 公共参数
-    │   ├── htmlReport.py               // 测试报告
-    │   ├── httpConfig.py               // http
-    │   ├── logConfig.py                // 日志配置
-    │   ├── emailConfig.py              // 配置邮箱    
-    │   └── readConfig.py               // 读取配置文件
+    ├── common                           // 公共方法
+    │   ├── singleSignOn.py                  
+    │   ├── commFunc.py
+    │   ├── dbConfig.py
+    │   ├── globalParams.py
+    │   ├── htmlReport.py
+    │   ├── httpConfig.py
+    │   ├── logConfig.py
+    │   ├── emailConfig.py
+    │   └── readConfig.py
     ├── config                           // 环境配置
     │   ├── testConfig.ini
     │   └── quasiConfig.ini
     ├── log                              // 日志log
     │   ├── error-20170227182905.log
     │   └── error-20170227182905.log.1 
+    ├── proAPI                          // 接口API
+    │   ├── projectA
+    │   │   ├── testA.py 
+    │   │   ├── testB.py     
+    │   ├── projectB
+    │   │   └── testB.py               
     ├── testCase                         // 测试用例
     │   ├── projectA
     │   │   ├── testA.py 
     │   │   ├── testB.py     
     │   ├── projectB
-    │   │   ├── testC.py    
-    │   ├── projectC  
-    │   │   ├── testD.py           
-    │   └── projectD 
+    │   │   └── testD.py           
     ├── report                           // 测试报告
          └── report20170227182905.html 
 

@@ -7,7 +7,6 @@
 import logging
 import logging.handlers
 import threading
-
 from common import readConfig
 
 # Color escape string

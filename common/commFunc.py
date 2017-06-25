@@ -5,6 +5,7 @@
 # @Version : python 3.4
 # @Author  : KingDow
 import hashlib
+import json
 import os
 import time
 import urllib.parse
@@ -97,3 +98,33 @@ def is_file_exist(path):
             return True
     except IOError:
         return False
+
+
+def data_format(mystr, to_format=0):
+    """
+    将fiddler抓包SyntaxView中参数转换dict
+    :param to_format: 待转换格式，0表示string，1表示dict，默认0
+    :param mystr:sign=123&appType=1&source=1&
+    :return:{'appType': '1', 'source': '1', 'sign': '123'}
+    """
+    try:
+        mydict = dict([s.split('=') for s in mystr.split('&') if s])
+        json_str = json.dumps(mydict, indent=4, ensure_ascii=False)
+        if int(to_format) == 0:
+            return json_str
+        elif int(to_format) == 1:
+            return mydict
+        else:
+            print('待转换格式输入有误，请输入0 / 1，分别标识string / dict')
+    except ValueError:
+        print('data_format Error!')
+
+
+def title_format(mystr):
+    """
+    将fiddler抓包接口驼峰命名转换python小写下划线格式
+    :param mystr:
+    :return:
+    """
+    newstr = "".join(["_" + ch if ch.isupper() else ch for ch in mystr])
+    return newstr.lower()

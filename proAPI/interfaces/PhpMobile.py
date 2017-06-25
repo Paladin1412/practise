@@ -27,7 +27,7 @@ class PhpMobile(object):
         data = {'timestamp': commFunc.timestamp_10(),
                 'uid': globalParams.get_value('login_uid'),
                 'user_account': globalParams.get_value('login_uid'),
-                'house_num': ReadConfig(conf_path='keeperParanmsPath').conf_value('RESBLOCK', 'resblockId'),
+                'house_num': globalParams.get_value('resblock_id'),
                 'sign': commFunc.get_app_sign(globalParams.get_value('login_uid'), commFunc.timestamp_10())
                 }
         resp = self.http.http_post(url, data)

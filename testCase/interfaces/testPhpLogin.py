@@ -5,7 +5,7 @@
 # @Version : python 3.4
 # @Author  : KingDow
 from common import globalParams
-from proAPI.interfaces.testPhpLogin import PhpLogin
+from proAPI.interfaces.PhpLogin import PhpLogin
 from proAPI.ziroomer.getappid import CommonApiParas
 
 

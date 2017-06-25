@@ -5,7 +5,6 @@
 # @Version : python 3.4
 # @Author  : KingDow
 import requests
-
 from common import readConfig
 from common.logConfig import GetLog
 

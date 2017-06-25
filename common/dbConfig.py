@@ -55,8 +55,8 @@ class OracleConfig(object):
 class GetMysql(object):
     def __init__(self, db, config):
         read_config = readConfig.ReadConfig()
-        dbname = read_config.conf_mysql(db)
-        dbconfig = read_config.conf_mysql(config)
+        dbname = read_config.conf_value('MYSQL', db)
+        dbconfig = read_config.conf_value('MYSQL', config)
         self.mysql = MysqlConfig(db=dbname, config=dbconfig)
 
     def get_mysql_conn(self):
@@ -70,9 +70,9 @@ class GetMysql(object):
 class GetOracle(object):
     def __init__(self, user, pwd, config):
         read_config = readConfig.ReadConfig()
-        dbuser = read_config.conf_oracle(user)
-        dbpwd = read_config.conf_oracle(pwd)
-        dbconfig = read_config.conf_oracle(config)
+        dbuser = read_config.conf_value('ORACLE', user)
+        dbpwd = read_config.conf_value('ORACLE', pwd)
+        dbconfig = read_config.conf_value('ORACLE', config)
         self.oracle = OracleConfig(user=dbuser, pwd=dbpwd, config=dbconfig)
 
     def get_oracle_conn(self):

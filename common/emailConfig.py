@@ -14,29 +14,29 @@ from datetime import datetime
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 from common import readConfig
 from common.logConfig import GetLog
-
-localReadConfig = readConfig.ReadConfig()
+from common.readConfig import ReadConfig
 
 
 class EmailConfig(object):
     def __init__(self):
         self.log = GetLog().log()
-        self.host = localReadConfig.conf_email("mail_host")
-        self.user = localReadConfig.conf_email("mail_user")
-        self.password = localReadConfig.conf_email("mail_pass")
-        self.port = localReadConfig.conf_email("mail_port")
-        self.sender = localReadConfig.conf_email("sender")
-        self.content = localReadConfig.conf_email("content")
-        self.value = localReadConfig.conf_email("receiver")
+        self.host = ReadConfig().conf_value('EMAIL', "mail_host")
+        self.user = ReadConfig().conf_value('EMAIL', "mail_user")
+        self.password = ReadConfig().conf_value('EMAIL', "mail_pass")
+        self.port = ReadConfig().conf_value('EMAIL', "mail_port")
+        self.sender = ReadConfig().conf_value('EMAIL', "sender")
+        self.content = ReadConfig().conf_value('EMAIL', "content")
+        self.value = ReadConfig().conf_value('EMAIL', "receiver")
         self.receiver = []
         # 获取收件人邮箱地址列表
         for n in str(self.value).split("/"):
             self.receiver.append(n)
         # 邮件主题 = title + date
         date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        title = localReadConfig.conf_email("subject")
+        title = ReadConfig().conf_value('EMAIL', "subject")
         self.subject = title + " " + date
         self.msg = MIMEMultipart('mixed')
         self.reportpath = readConfig.os.getcwd()  # self.log.get_result_path()

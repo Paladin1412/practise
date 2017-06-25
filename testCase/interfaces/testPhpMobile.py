@@ -6,8 +6,8 @@
 # @Author  : KingDow
 
 from common import globalParams
-from proAPI.interfaces.testPhpLogin import PhpLogin
-from proAPI.interfaces.testPhpMobile import PhpMobile
+from proAPI.interfaces.PhpLogin import PhpLogin
+from proAPI.interfaces.PhpMobile import PhpMobile
 from proAPI.ziroomer.getappid import CommonApiParas
 
 

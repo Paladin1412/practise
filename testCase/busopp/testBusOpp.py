@@ -4,29 +4,40 @@
 # @Date    : 2017/4/24 17:52
 # @Version : python 3.4
 # @Author  : KingDow
-from common import commFunc
 from common import globalParams
-from common.httpConfig import GetHttp
+from proAPI.busopp.BusOpp import BusOpp
+from proAPI.ziroomer.getappid import CommonApiParas
 
 
-class BusOpp(object):
+class TestBusOpp(object):
     def __init__(self):
-        self.http = GetHttp('busopp_domain').get_http()
+        globalParams.global_init()  # 全局变量初始化
+        self.th = BusOpp()
+
+    def setUp(self):
+        CommonApiParas().get_appid()
+        print("MyTestClass setup")
+
+    def tearDown(self):
+        print("MyTestClass teardown")
 
     def test_query_opp_page_info(self):
-        url = '/busopp/queryOppPageInfo'
-        data = {'keeperId': globalParams.get_value('login_uid'),
-                'appType': KeeperParams().appType,
-                'source': KeeperParams().source,
-                'keeperCode': globalParams.get_value('login_uid'),
-                'osType': KeeperParams().osType,
-                'imei': KeeperParams().imei,
-                'versionInt': KeeperParams().versionInt,
-                'uuid': globalParams.get_value('app_id') + commFunc.timestamp_13(),
-                'timestamp': commFunc.timestamp_13(),
-                'appId': globalParams.get_value('app_id'),
-                'cityCode': KeeperParams().cityCode
-                }
-        data['sign'] = commFunc.get_crm_sign(data)
-        resp = self.http.http_post(url, data)
-        return resp
+        response = self.th.query_opp_page_info()
+        assert response.get('status') == 'success'
+
+    def test_query_opp_life_cycle_new(self):
+        response = self.th.query_opp_life_cycle_new()
+        assert response.get('status') == 'success'
+
+    def test_get_child_list_by_ident(self):
+        response = self.th.get_child_list_by_ident()
+        assert response.get('status') == 'success'
+
+    def test_get_survey_info_list_by_house_id(self):
+        response = self.th.get_survey_info_list_by_house_id()
+        assert response.get('status') == 'success'
+
+    def test_commit_survey(self):
+        response = self.th.commit_survey()
+        assert response.get('status') == 'success'
+

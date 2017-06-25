@@ -27,9 +27,9 @@ class PhpLogin(object):
         data = {'user_account': login_name,
                 'password': password,
                 'sign': commFunc.get_app_sign(login_name, commFunc.timestamp_10()),
-                'appType': ReadConfig(conf_path='keeperParanmsPath').conf_value('LOGIN', 'appType'),
+                'appType': ReadConfig('interfacesParams').conf_value('interfacesParams', 'appType'),
                 'timestamp': commFunc.timestamp_10(),
-                'companyFlag': ReadConfig(conf_path='keeperParanmsPath').conf_value('LOGIN', 'companyFlag'),
+                'companyFlag': ReadConfig('interfacesParams').conf_value('interfacesParams', 'companyFlag'),
                 'uid': login_name,
                 'login_name': login_name
                 }
@@ -58,10 +58,18 @@ class PhpLogin(object):
         url = '/index.php?_p=api_mobile&_a=stewardInformation'
         data = {'user_account': globalParams.get_value('login_uid'),
                 'timestamp': commFunc.timestamp_10(),
-                'companyFlag': ReadConfig(conf_path='keeperParanmsPath').conf_value('LOGIN', 'companyFlag'),
+                'companyFlag': ReadConfig('interfacesParams').conf_value('interfacesParams', 'companyFlag'),
                 'sign': commFunc.get_app_sign(globalParams.get_value('login_uid'), commFunc.timestamp_10())
                 }
         resp = self.http.http_post(url, data)
+
+        if resp.get('data'):
+            globalParams.set_value('agent_name', resp.get('data').get('agent_name'))
+            globalParams.set_value('agent_part', resp.get('data').get('agent_part'))
+            globalParams.set_value('bloger_group', resp.get('data').get('bloger_group'))
+            globalParams.set_value('agent_phone', resp.get('data').get('agent_phone'))
+        else:
+            self.log.warning('获取登录人信息接口为空，接口返回值：' + resp)
         return resp
 
     def php_get_announcement_list(self):
