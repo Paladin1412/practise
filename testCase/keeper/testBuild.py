@@ -4,6 +4,8 @@
 # @Date    : 2017/4/24 18:10
 # @Version : python 3.4
 # @Author  : KingDow
+from nose.tools import assert_equal
+
 from common import globalParams
 from proAPI.keeper.Build import BuildInfo
 from proAPI.ziroomer.getappid import CommonApiParas
@@ -25,24 +27,30 @@ class TestBuildInfo(object):
 
     def test_get_district_list(self):
         response = self.th.get_district_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_village_list(self):
         response = self.th.get_village_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_build_num_list(self):
         response = self.th.get_build_num_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_unit_list(self):
         response = self.th.get_unit_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_floor_list(self):
         response = self.th.get_floor_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_room_num_list(self):
         response = self.th.get_room_num_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')

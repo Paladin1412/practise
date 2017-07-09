@@ -4,6 +4,7 @@
 # @Date    : 2017/4/24 16:37
 # @Version : python 3.4
 # @Author  : KingDow
+from nose.tools import assert_equal
 
 from common import globalParams
 from proAPI.keeper.KeeperLogin import KeeperLogin
@@ -24,28 +25,35 @@ class TestKeeperLogin(object):
 
     def test_get_latest_version(self):
         response = self.th.get_latest_version()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_home_page_module(self):
         response = self.th.get_home_page_module()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_schedule_by_keeperid_and_condition(self):
         response = self.th.get_schedule_by_keeperid_and_condition()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_app_be_evaluate(self):
         response = self.th.get_app_be_evaluate()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_target_info(self):
         response = self.th.get_target_info()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_all_module(self):
         response = self.th.get_all_module()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')
 
     def test_get_message_list(self):
         response = self.th.get_message_list()
-        assert response.get('status') == 'success'
+        status = response.get('status')
+        assert_equal(status, 'success')

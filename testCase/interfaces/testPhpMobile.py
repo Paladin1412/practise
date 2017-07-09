@@ -4,6 +4,7 @@
 # @Date    : 2017/4/24 18:04
 # @Version : python 3.4
 # @Author  : KingDow
+from nose.tools import assert_equal
 
 from common import globalParams
 from proAPI.interfaces.PhpLogin import PhpLogin
@@ -26,4 +27,5 @@ class TestPhpMobile(object):
 
     def test_get_is_focus_resblock(self):
         resp = self.th.get_is_focus_resblock()
-        assert resp.get('status') == 'success'
+        status = resp.get('status')
+        assert_equal(status, 'success')
