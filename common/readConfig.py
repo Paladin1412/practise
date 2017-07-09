@@ -17,6 +17,7 @@ logPath = os.path.join(rootPath, "log", 'error-%s.log' % time.strftime(
 # 配置文件目录
 confsPath = {
     'configPath': os.path.join(rootPath, "config", "testConfig.ini"),
+    'xmlPath': os.path.join(rootPath, "CaseList.xml"),
     'busoppParams': os.path.join(rootPath, "proAPI", "busopp", "busoppParam", "busoppParams.ini"),
     'interfacesParams': os.path.join(rootPath, "proAPI", "interfaces", "interfacesParam", "interfacesParams.ini"),
     'keeperParams': os.path.join(rootPath, "proAPI", "keeper", "keeperParam", "keeperParams.ini")

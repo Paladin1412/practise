@@ -10,6 +10,7 @@ import os
 import time
 import urllib.parse
 from common.logConfig import GetLog
+from xml.etree import ElementTree as et
 
 log = GetLog().log()
 
@@ -128,3 +129,42 @@ def title_format(mystr):
     """
     newstr = "".join(["_" + ch if ch.isupper() else ch for ch in mystr])
     return newstr.lower()
+
+
+def get_xml(xml_path):
+    """
+    解析xml文件
+    :param xml_path:readConfig.confsPath.get('xmlPath')
+    :return:
+    """
+    tree = et.parse(xml_path)
+    root = tree.getroot()
+    interface_info = []
+    i_base = {
+        "title": root.find("title").text,
+        "host": root.find("host").text,
+        "port": root.find("port").text,
+        "No": root.find("No").text
+    }
+    interface_info.append(i_base)
+    for elem in root.findall("InterfaceList"):
+        i_app = {
+            "param": [],
+            "id": elem.find('id').text,
+            "name": elem.find('name').text,
+            "method": elem.find('method').text,
+            "url": elem.find('url').text,
+            "hope": elem.find('hope').text,
+            "login": elem.find('login').text,
+            "isList": elem.find('isList').text
+        }
+        for p in elem.findall("params"):
+            param = {
+                "name": p.find("name").text,
+                "type": p.find("name").attrib.get("type"),
+                "value": p.find("value").text,
+                "must": p.find("must").text
+            }
+            i_app["param"].append(param)
+        interface_info.append(i_app)
+    return interface_info

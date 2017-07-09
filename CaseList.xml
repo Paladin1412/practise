@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <title>导购码接口测试</title>
+    <host>dgm.boweixin.com</host>
+    <port>80</port>
+    <No>[1001,1002,1003,1004]</No>
+    <header>{"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","User-Agent":"Mozilla/5.0
+        (Windows NT 6.1; rv:29.0) Gecko/20100101 Firefox/29.0"}
+    </header>
+    <InterfaceList>
+        <params>
+            <name type="str">huangcx9</name>
+            <value>123</value>
+            <must>1</must>
+        </params>
+        <isList>0</isList>
+        <id>1001</id>
+        <name>登陆</name>
+        <method>POST</method>
+        <url>php_login_normal</url>
+        <hope>{"appStatus":{"errorCode":0,"message":"操作成功"}}</hope>
+        <login>user_id</login>
+        <isList>0</isList>
+    </InterfaceList>
+    <InterfaceList>
+        <id>1002</id>
+        <name>个人主页</name>
+        <method>POST</method>
+        <url>php_statistical_information_quantity</url>
+        <hope>{"appStatus":{"errorCode":0,"message":"操作成功"}}</hope>
+        <login>1</login>
+        <isList>1</isList>
+    </InterfaceList>
+    <InterfaceList>
+        <id>1003</id>
+        <name>个人主页</name>
+        <method>POST</method>
+        <url>php_steward_information</url>
+        <hope>{"appStatus":{"errorCode":0,"message":"操作成功"}}</hope>
+        <login>1</login>
+        <isList>1</isList>
+    </InterfaceList>
+    <InterfaceList>
+        <id>1004</id>
+        <name>个人主页</name>
+        <method>POST</method>
+        <url>php_get_announcement_list</url>
+        <hope>{"appStatus":{"errorCode":0,"message":"操作成功"}}</hope>
+        <login>1</login>
+        <isList>1</isList>
+    </InterfaceList>
+</root>
