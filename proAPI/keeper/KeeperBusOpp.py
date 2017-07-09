@@ -97,8 +97,8 @@ class KeeperBusOpp(object):
                 }
         data['sign'] = commFunc.get_crm_sign(data)
         resp = self.http.http_post(url, data)
-        error_code = resp.get("error_code")
-        if error_code == '503178':
+        error_code = int(resp.get("error_code"))
+        if error_code != 0:
             while True:
                 build_info = BuildInfo()
                 build_info.get_build_num_list()
@@ -106,10 +106,10 @@ class KeeperBusOpp(object):
                 build_info.get_floor_list()
                 build_info.get_room_num_list()
                 new_resp = self.app_search_bus_opp_by_standard_info()
-                new_error_code = new_resp.get("error_code")
-                if new_error_code == "503178":
+                new_error_code = int(new_resp.get("error_code"))
+                if new_error_code == 503178:  # 商机已录入
                     continue
-                elif new_error_code == "503433":
+                elif new_error_code == 503433:  # 商机已签约
                     continue
                 else:
                     return new_resp

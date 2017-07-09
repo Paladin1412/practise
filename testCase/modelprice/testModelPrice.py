@@ -84,6 +84,10 @@ class TestModelPrice(object):
         response = self.th.commit_room_info()
         assert response.get('status') == 'success'
 
+    def test_commit_config_info(self):
+        response = self.th.commit_config_info()
+        assert response.get('status') == 'success'
+
     def test_get_hire_price(self):
         response = self.th.get_hire_price()
         assert response.get('status') == 'success'

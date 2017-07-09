@@ -6,6 +6,7 @@
 # @Author  : KingDow
 
 from bs4 import BeautifulSoup
+
 from common import commFunc
 from common import globalParams
 from common.dbConfig import GetMysql
@@ -128,7 +129,7 @@ class ModelPrice(object):
         url = '/index.php?r=m-house-step/get-house-info'
         data = {
             'type': 'danyuan',
-            'building_no': globalParams.get_value('building_no'),
+            'building_no': globalParams.get_value('buildingNo'),
             'resblock_id': globalParams.get_value('resblock_id'),
             'district_id': ReadConfig('keeperParams').conf_value('keeperParams', 'districtId')
         }
@@ -144,7 +145,7 @@ class ModelPrice(object):
         url = '/index.php?r=m-house-step/get-house-info'
         data = {
             'type': 'louceng',
-            'building_no': globalParams.get_value('building_no'),
+            'building_no': globalParams.get_value('buildingNo'),
             'resblock_id': globalParams.get_value('resblock_id'),
             'unit': globalParams.get_value('unit'),
             'district_id': ReadConfig('keeperParams').conf_value('keeperParams', 'districtId')
@@ -161,7 +162,7 @@ class ModelPrice(object):
         url = '/index.php?r=m-house-step/get-house-info'
         data = {
             'type': 'fangwu',
-            'building_no': globalParams.get_value('building_no'),
+            'building_no': globalParams.get_value('buildingNo'),
             'resblock_id': globalParams.get_value('resblock_id'),
             'unit': globalParams.get_value('unit'),
             'floor': globalParams.get_value('floor'),
@@ -179,10 +180,11 @@ class ModelPrice(object):
         url = '/index.php?r=m-house-step/get-house-info'
         data = {
             'type': 'standard_id',
-            'building_no': globalParams.get_value('building_no'),
+            'building_no': globalParams.get_value('buildingNo'),
             'resblock_id': globalParams.get_value('resblock_id'),
             'unit': globalParams.get_value('unit'),
             'floor': globalParams.get_value('floor'),
+            'room_no': globalParams.get_value('room_no'),
             'district_id': ReadConfig('keeperParams').conf_value('keeperParams', 'districtId')
         }
         resp = self.http.http_post(url, data)
@@ -202,7 +204,7 @@ class ModelPrice(object):
         url = '/index.php?r=m-house-step/commit-house-info'
         data = {
             'city_code': ReadConfig('keeperParams').conf_value('keeperParams', 'cityCode'),
-            'building_no': globalParams.get_value('building_no'),
+            'building_no': globalParams.get_value('buildingNo'),
             'resblock_id': globalParams.get_value('resblock_id'),
             'resblock': globalParams.get_value('resblock_name'),
             'unit': globalParams.get_value('unit'),
@@ -247,7 +249,7 @@ class ModelPrice(object):
             'saloon_area': ReadConfig('keeperParams').conf_value('keeperParams', 'saloon_area'),  # 客厅面积
             'room_area': ReadConfig('keeperParams').conf_value('keeperParams', 'saloon_area'),  # 房间面积
             'orientation': ReadConfig('keeperParams').conf_value('keeperParams', 'orientation'),  # 房间朝向
-            'toliet': ReadConfig('keeperParams').conf_value('keeperParams', 'toliet'),  # 是否独卫
+            'toliet': ReadConfig('keeperParams').conf_value('keeperParams', 'toilet'),  # 是否独卫
             'balcony': ReadConfig('keeperParams').conf_value('keeperParams', 'balcony'),  # 是否独立阳台
             'is_new_room': ReadConfig('keeperParams').conf_value('keeperParams', 'is_new_room'),  # 是否优化间
             'is_shelter': ReadConfig('keeperParams').conf_value('keeperParams', 'is_shelter'),  # 是否有遮挡
@@ -269,15 +271,15 @@ class ModelPrice(object):
         :return:
         """
         url = '/index.php?r=m-room-step/commit-room-info'
+        after_room = ReadConfig('keeperParams').conf_value('keeperParams', 'changeToNum')
         data = {
             'assess_code': globalParams.get_value('assess_code'),
-            'pre_room': ReadConfig('keeperParams').conf_value('keeperParams', 'changeFromNum'),  # 改前房间数
-            'after_room': ReadConfig('keeperParams').conf_value('keeperParams', 'changeToNum'),  # 改后房间数
+            'after_room': after_room,  # 改后房间数
             'decorate_type': ReadConfig('keeperParams').conf_value('keeperParams', 'decorateType'),  # 装修类型
             'saloon_area': ReadConfig('keeperParams').conf_value('keeperParams', 'saloon_area'),  # 客厅面积
             'room_area': ReadConfig('keeperParams').conf_value('keeperParams', 'saloon_area'),  # 房间面积
             'orientation': ReadConfig('keeperParams').conf_value('keeperParams', 'orientation'),  # 房间朝向
-            'toliet': ReadConfig('keeperParams').conf_value('keeperParams', 'toliet'),  # 是否独卫
+            'toliet': ReadConfig('keeperParams').conf_value('keeperParams', 'toilet'),  # 是否独卫
             'balcony': ReadConfig('keeperParams').conf_value('keeperParams', 'balcony'),  # 是否独立阳台
             'is_new_room': ReadConfig('keeperParams').conf_value('keeperParams', 'is_new_room'),  # 是否优化间
             'is_shelter': ReadConfig('keeperParams').conf_value('keeperParams', 'is_shelter'),  # 是否有遮挡
@@ -294,6 +296,42 @@ class ModelPrice(object):
             'stardard_rent_price': globalParams.get_value('rent_price'),
             'real_rent_price': globalParams.get_value('rent_price')
         }
+        for i in range(int(after_room)):
+            data['room_no'] = str(i + 1)
+            self.http.http_post(url, data)
+
+    def commit_config_info(self):
+        """
+        POST http://modeprice.m.t.ziroom.com/index.php?r=m-house-config-step/commit-config-info HTTP/1.1
+        提交公共区域配置信息
+        :return:
+        """
+        url = '/index.php?r=m-house-config-step/commit-config-info'
+        data = {
+            'assess_code': globalParams.get_value('assess_code'),
+            'bx': ReadConfig('keeperParams').conf_value('keeperParams', 'bx'),  # 冰箱
+            'xyj': ReadConfig('keeperParams').conf_value('keeperParams', 'xyj'),  # 洗衣机
+            'rshq': ReadConfig('keeperParams').conf_value('keeperParams', 'rshq'),  # 客厅面积
+            '60shrshq': ReadConfig('keeperParams').conf_value('keeperParams', '60shrshq'),  # 房间面积
+            'wbl': ReadConfig('keeperParams').conf_value('keeperParams', 'wbl'),  # 微波炉
+            'scsjj': ReadConfig('keeperParams').conf_value('keeperParams', 'scsjj'),  # 是否独卫
+            'yj': ReadConfig('keeperParams').conf_value('keeperParams', 'yj'),  # 衣架
+            'czh': ReadConfig('keeperParams').conf_value('keeperParams', 'czh'),  # 是否优化间
+            'dzs': ReadConfig('keeperParams').conf_value('keeperParams', 'dzs'),  # 是否有遮挡
+            'zj': ReadConfig('keeperParams').conf_value('keeperParams', 'zj'),  # 衣柜
+            'gdq': ReadConfig('keeperParams').conf_value('keeperParams', 'gdq'),  # 书桌
+            'shq': ReadConfig('keeperParams').conf_value('keeperParams', 'shq'),  # 沙发
+            'db': ReadConfig('keeperParams').conf_value('keeperParams', 'db'),  # 空调
+            'zhtchg': ReadConfig('keeperParams').conf_value('keeperParams', 'zhtchg'),  # 1.1m床
+            'qtpzhchb': ReadConfig('keeperParams').conf_value('keeperParams', 'qtpzhchb'),  # 1.1m床垫
+            'qtzhxchb': ReadConfig('keeperParams').conf_value('keeperParams', 'qtzhxchb'),  # 1.5m床
+            'dlgz': ReadConfig('keeperParams').conf_value('keeperParams', 'dlgz'),  # 1.5m床垫
+            'shlgz': ReadConfig('keeperParams').conf_value('keeperParams', 'shlgz'),  # 1.8m床
+            'wshm': ReadConfig('keeperParams').conf_value('keeperParams', 'wshm'),  # 1.8m床垫
+            'chfczh': ReadConfig('keeperParams').conf_value('keeperParams', 'chfczh'),
+            'sgch': ReadConfig('keeperParams').conf_value('keeperParams', 'sgch'),
+            'diaoding': ReadConfig('keeperParams').conf_value('keeperParams', 'diaoding'),  # 1.8m床垫
+        }
         resp = self.http.http_post(url, data)
         return resp
 
@@ -306,7 +344,7 @@ class ModelPrice(object):
         url = '/index.php?r=m-house-step/get-hire-price'
         data = {
             'assess_code': globalParams.get_value('assess_code'),
-            'public_toliet': ReadConfig('keeperParams').conf_value('keeperParams', 'toliet'),  # 公共卫生间
+            'public_toliet': ReadConfig('keeperParams').conf_value('keeperParams', 'toilet'),  # 公共卫生间
             'pre_room': ReadConfig('keeperParams').conf_value('keeperParams', 'changeFromNum'),  # 改前房间数
             'after_room': ReadConfig('keeperParams').conf_value('keeperParams', 'changeToNum'),  # 改后房间数
             'decorate_type': ReadConfig('keeperParams').conf_value('keeperParams', 'decorateType'),  # 装修类型
@@ -321,7 +359,7 @@ class ModelPrice(object):
             'payment': ReadConfig('keeperParams').conf_value('keeperParams', 'payment'),
             'fund': ReadConfig('keeperParams').conf_value('keeperParams', 'fund')
         }
-        for i in range(1, int(data.get('payment')) + 1):
+        for i in range(1, int(data.get('after_room')) + 1):
             data['vanancy_day[%s][vanancy_day]' % i] = '30'
         resp = self.http.http_post(url, data)
         return resp
@@ -350,12 +388,12 @@ class ModelPrice(object):
         :return:
         """
         url = '/index.php?r=m-assess-step/commit-assess-info'
-        param = {
+        data = {
             'assess_code': globalParams.get_value('assess_code'),
             'real_sh_jg': globalParams.get_value('real_sh_jg'),
             'op': 'button_audit'
         }
-        resp = self.http.http_get(url, param)
+        resp = self.http.http_post(url, data)
         return resp
 
     def assess_list_info(self):
@@ -381,13 +419,14 @@ class ModelPrice(object):
 
     @staticmethod
     def get_access_id():
-        mysql = GetMysql('mode_price', 'mode_price_config')
+        mysql = GetMysql('mode_price', 'appziroom_config')
         mysql_conn = mysql.get_mysql_conn()
         mysql_cur = mysql_conn.cursor()
         assess_code = globalParams.get_value('assess_code')
-        sql = 'Select id from mode_price.t_price_mode_assess where assess_code=%s' % assess_code
-        mysql_cur.execute(sql)
-        assess_id = mysql_cur.fetchall()
+        sql = 'Select id from mode_price.t_price_mode_assess where assess_code=%s'
+        mysql_cur.execute(sql, assess_code)
+        assess_info = mysql_cur.fetchone()
+        assess_id = assess_info.get('id')
         globalParams.set_value('assess_id', assess_id)
         mysql.mysql_conn_close()
         return assess_id

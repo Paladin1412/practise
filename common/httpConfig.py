@@ -63,8 +63,8 @@ class HttpConfig(object):
                 self.log.info("发送post请求: %s 服务器返回: %s" % (r.url, r.status_code))
                 self.log.info("请求入参为: %s" % data)
             else:
-                self.log.error("发送post请求: %s 服务器返回: %s\n error info: %s " % (
-                    r.url, r.status_code, r.text))
+                self.log.error("发送post请求: %s ，请求入参为: %s，\n服务器返回: %s error info: %s " % (
+                    r.url, data, r.status_code, r.text))
                 self.log.error(r.raise_for_status())
             try:
                 self.log.info('接口出参为: %s' % r.json())

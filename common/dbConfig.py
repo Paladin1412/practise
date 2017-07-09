@@ -57,7 +57,7 @@ class GetMysql(object):
         read_config = readConfig.ReadConfig()
         dbname = read_config.conf_value('MYSQL', db)
         dbconfig = read_config.conf_value('MYSQL', config)
-        self.mysql = MysqlConfig(db=dbname, config=dbconfig)
+        self.mysql = MysqlConfig(db=dbname, config=eval(dbconfig))
 
     def get_mysql_conn(self):
         return self.mysql.get_mysql_conn()
